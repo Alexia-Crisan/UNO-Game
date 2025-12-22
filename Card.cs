@@ -13,7 +13,7 @@ class Card
         Number = number;
     }
 
-    public bool isPlayable(Card topCard)
+    public bool IsPlayable(Card topCard)
     {
         bool colorMatch = this.Color == topCard.Color;
         bool isWildCard = this.Color == Color.None;
