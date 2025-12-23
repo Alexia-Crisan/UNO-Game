@@ -1,7 +1,10 @@
 class Deck
 {
     private Stack<Card> cards;
-    private Random rand = new Random();
+
+    private List<Card> deckList;
+
+    private static Random rand = new Random();
 
     public int Count => cards.Count;
 
@@ -32,8 +35,7 @@ class Deck
             deckList.Add(new Card(Color.None, CardType.WildDrawFour));
         }
 
-        deckList = deckList.OrderBy(x => rand.Next()).ToList();
-        cards = new Stack<Card>(deckList);
+        Shuffle();
     }
 
     public bool DrawCard(out Card drawnCard)
@@ -53,4 +55,24 @@ class Deck
         cards.Push(card);
     }
 
+    public void Shuffle()
+    {
+        deckList = deckList.OrderBy(x => rand.Next()).ToList();
+        cards = new Stack<Card>(deckList);
+    }
+
+    public void RefillFromDiscard(List<Card> discardPile, Card topCard)
+    {
+        cards.Clear();
+
+        if (topCard.Type == CardType.WildCard || topCard.Type == CardType.WildDrawFour)
+        {
+            topCard.SetColor(Color.None); // reset color
+        }
+
+        deckList = discardPile.ToList();
+        discardPile.Clear();
+
+        Shuffle();
+    }
 }

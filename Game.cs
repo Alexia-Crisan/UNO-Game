@@ -11,6 +11,8 @@ class Game
 
     private bool playing = true;
 
+    private List<Card> discardPile = new List<Card>();
+
     public Game(List<string> playerNames)
     {
         deck = new Deck();
@@ -143,6 +145,7 @@ class Game
             if (playedCard != null)
             {
                 Console.WriteLine($"{currentPlayer.Name} plays {playedCard}");
+                discardPile.Add(topCard);
                 topCard = playedCard;
 
                 ApplyCardEffect(playedCard);
