@@ -22,6 +22,11 @@ class Card
         return colorMatch || areSameNumber || isWildCard;
     }
 
+    public void SetColor(Color newColor)
+    {
+        Color = newColor;
+    }
+
     public override string ToString()
     {
         return Type == CardType.Number ? $"{Color} {Number}" : $"{Color} {Type}";

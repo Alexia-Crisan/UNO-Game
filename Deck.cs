@@ -47,4 +47,10 @@ class Deck
         drawnCard = cards.Pop();
         return true;
     }
+
+    public void PutCardBack(Card card)
+    {
+        cards.Push(card);
+    }
+
 }

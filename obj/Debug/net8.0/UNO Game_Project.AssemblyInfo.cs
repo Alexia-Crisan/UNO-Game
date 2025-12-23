@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UNO Game_Project")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30723c4b83778306abd0f1aa0ae5dd2c708a63ee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af65947d80184340a248428eff0967b785949622")]
 [assembly: System.Reflection.AssemblyProductAttribute("UNO Game_Project")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UNO Game_Project")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
