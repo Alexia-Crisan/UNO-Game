@@ -10,7 +10,7 @@ class Deck
 
     public Deck()
     {
-        List<Card> deckList = new List<Card>();
+        deckList = new List<Card>();
 
         // add coloured cards of all types
         foreach (Color color in Enum.GetValues(typeof(Color)))
@@ -38,15 +38,20 @@ class Deck
         Shuffle();
     }
 
-    public bool DrawCard(out Card drawnCard)
+    public bool DrawCard(out Card card, List<Card> discardPile, Card topCard)
     {
         if (cards.Count == 0)
         {
-            drawnCard = null;
-            return false;
+            if (discardPile.Count == 0)
+            {
+                card = null;
+                return false; // no cards left anywhere
+            }
+
+            RefillFromDiscard(discardPile, topCard);
         }
 
-        drawnCard = cards.Pop();
+        card = cards.Pop();
         return true;
     }
 
@@ -63,15 +68,19 @@ class Deck
 
     public void RefillFromDiscard(List<Card> discardPile, Card topCard)
     {
+        if (discardPile == null || discardPile.Count == 0)
+            return;
+
         cards.Clear();
 
-        if (topCard.Type == CardType.WildCard || topCard.Type == CardType.WildDrawFour)
-        {
-            topCard.SetColor(Color.None); // reset color
-        }
-
         deckList = discardPile.ToList();
+
+        if (topCard != null)
+            deckList.Remove(topCard);
+
         discardPile.Clear();
+
+        Shuffle();
 
         Shuffle();
     }

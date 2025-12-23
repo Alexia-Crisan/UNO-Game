@@ -27,10 +27,10 @@ class Game
         // deal 7 cards to each player
         foreach (var player in players)
             for (int i = 0; i < 7; i++)
-                player.DrawCard(deck);
+                player.DrawCard(deck, discardPile, null);
 
 
-        if (!deck.DrawCard(out topCard))
+        if (!deck.DrawCard(out topCard, discardPile, null))
         {
             playing = false;
             return;
@@ -93,8 +93,8 @@ class Game
                 {
                     int nextPlayer = GetNextPlayerIndex();
                     Console.WriteLine($"{players[nextPlayer].Name} draws 2 cards!");
-                    players[nextPlayer].DrawCard(deck);
-                    players[nextPlayer].DrawCard(deck);
+                    players[nextPlayer].DrawCard(deck, discardPile, null);
+                    players[nextPlayer].DrawCard(deck, discardPile, null);
                     currentPlayerIndex = GetNextPlayerIndex(2);
                     break;
                 }
@@ -118,7 +118,7 @@ class Game
                     int nextPlayer4 = GetNextPlayerIndex();
                     Console.WriteLine($"{players[nextPlayer4].Name} draws 4 cards!");
                     for (int i = 0; i < 4; i++)
-                        players[nextPlayer4].DrawCard(deck);
+                        players[nextPlayer4].DrawCard(deck, discardPile, null);
                     currentPlayerIndex = GetNextPlayerIndex(2);
                     break;
                 }
@@ -145,6 +145,10 @@ class Game
             if (playedCard != null)
             {
                 Console.WriteLine($"{currentPlayer.Name} plays {playedCard}");
+
+                // reset color for wild card + add to discard pile
+                if (topCard.Type == CardType.WildCard || topCard.Type == CardType.WildDrawFour)
+                    topCard.SetColor(Color.None);
                 discardPile.Add(topCard);
                 topCard = playedCard;
 
@@ -154,13 +158,13 @@ class Game
             {
                 Console.WriteLine($"{currentPlayer.Name} has no playable card. Drawing one...");
 
-                bool cardDrawn = currentPlayer.DrawCard(deck);
-
-                if (!cardDrawn)
+                bool drewCard = currentPlayer.DrawCard(deck, discardPile, topCard);
+                if (!drewCard)
                 {
-                    Console.WriteLine("\n[END] Deck is empty! Game ends!");
+                    Console.WriteLine("\nNo cards left anywhere! Game ends!");
+                    EndGameByFewestCards();
                     playing = false;
-                    break;
+                    return;
                 }
 
                 currentPlayerIndex = GetNextPlayerIndex(1);
@@ -171,6 +175,32 @@ class Game
                 Console.WriteLine($"\n{currentPlayer.Name} wins!");
                 break;
             }
+
+            int totalInHands = players.Sum(p => p.Hand.Count);
+            if (totalInHands == 108)
+            {
+                Console.WriteLine("\nAll cards are in players' hands! Game ends!");
+                EndGameByFewestCards();
+                break;
+            }
         }
     }
+
+    private void EndGameByFewestCards()
+    {
+        int minCards = players.Min(p => p.Hand.Count);
+        var winners = players.Where(p => p.Hand.Count == minCards).ToList();
+
+        if (winners.Count == 1)
+        {
+            Console.WriteLine($"\nGame ends! {winners[0].Name} wins with {minCards} cards left!");
+        }
+        else
+        {
+            Console.WriteLine($"\nGame ends! It's a tie between: {string.Join(", ", winners.Select(p => p.Name))} with {minCards} cards left each.");
+        }
+
+        playing = false;
+    }
+
 }

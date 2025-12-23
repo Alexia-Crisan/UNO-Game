@@ -8,11 +8,11 @@ class Player
         Name = name;
     }
 
-    public bool DrawCard(Deck deck)
+    public bool DrawCard(Deck deck, List<Card> discardPile, Card topCard)
     {
         Card drawnCard;
 
-        if (!deck.DrawCard(out drawnCard))
+        if (!deck.DrawCard(out drawnCard, discardPile, topCard))
             return false; // empty deck
 
         Hand.Add(drawnCard);
