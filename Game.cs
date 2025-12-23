@@ -137,7 +137,10 @@ class Game
         {
             Player currentPlayer = players[currentPlayerIndex];
 
-            Console.WriteLine($"\n[Top card]: {topCard}");
+            Console.Write("\n[Top card]: ");
+            topCard.PrintColored();
+            Console.WriteLine();
+
             currentPlayer.ShowHand();
 
             Card playedCard = currentPlayer.PlayCard(topCard);
@@ -145,6 +148,7 @@ class Game
             if (playedCard != null)
             {
                 Console.WriteLine($"{currentPlayer.Name} plays {playedCard}");
+                Console.WriteLine();
 
                 // reset color for wild card + add to discard pile
                 if (topCard.Type == CardType.WildCard || topCard.Type == CardType.WildDrawFour)

@@ -31,4 +31,33 @@ class Card
     {
         return Type == CardType.Number ? $"{Color} {Number}" : $"{Color} {Type}";
     }
+    public void PrintColored()
+    {
+        ConsoleColor consoleColor = ConsoleColor.White;
+
+        switch (Color)
+        {
+            case Color.Red:
+                consoleColor = ConsoleColor.Red; break;
+            case Color.Blue:
+                consoleColor = ConsoleColor.Blue; break;
+            case Color.Green:
+                consoleColor = ConsoleColor.Green; break;
+            case Color.Yellow:
+                consoleColor = ConsoleColor.Yellow; break;
+            case Color.None:
+                consoleColor = ConsoleColor.White; break;
+        }
+
+        var oldColor = Console.ForegroundColor;
+        Console.ForegroundColor = consoleColor;
+
+        if (Type == CardType.Number)
+            Console.Write($"{Color} {Number}");
+        else
+            Console.Write($"{Color} {Type}");
+
+        Console.ForegroundColor = oldColor; // reset
+    }
+
 }
