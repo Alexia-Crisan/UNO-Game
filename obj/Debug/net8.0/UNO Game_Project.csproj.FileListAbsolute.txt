@@ -1,0 +1,15 @@
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\bin\Debug\net8.0\UNO Game_Project.exe
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\bin\Debug\net8.0\UNO Game_Project.deps.json
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\bin\Debug\net8.0\UNO Game_Project.runtimeconfig.json
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\bin\Debug\net8.0\UNO Game_Project.dll
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\bin\Debug\net8.0\UNO Game_Project.pdb
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.AssemblyInfoInputs.cache
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.AssemblyInfo.cs
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.csproj.CoreCompileInputs.cache
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.sourcelink.json
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.dll
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\refint\UNO Game_Project.dll
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.pdb
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\UNO Game_Project.genruntimeconfig.cache
+C:\Users\alexx\OneDrive\Desktop\Foldere\AC_CTI\Anul 3\Semestrul 1\CFLP\Lab\UNO Game_Project\obj\Debug\net8.0\ref\UNO Game_Project.dll

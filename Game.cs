@@ -5,6 +5,10 @@ class Game
     private Card topCard;
     private int currentPlayerIndex;
 
+    private int direction = 1; // 1 = clockwise, -1 = counter-clockwise
+
+    private bool playing = true;
+
     public Game(List<string> playerNames)
     {
         deck = new Deck();
@@ -25,9 +29,21 @@ class Game
         currentPlayerIndex = 0;
     }
 
+    private int GetNextPlayerIndex(int steps = 1)
+    {
+        int index = currentPlayerIndex;
+
+        for (int i = 0; i < steps; i++)
+        {
+            index = (index + direction + players.Count) % players.Count;
+        }
+
+        return index;
+    }
+
     public void Play()
     {
-        while (true)
+        while (playing == true)
         {
             Player currentPlayer = players[currentPlayerIndex];
             Console.WriteLine($"\nTop card: {topCard}");
@@ -52,7 +68,7 @@ class Game
                 break;
             }
 
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+            currentPlayerIndex = GetNextPlayerIndex(-1);
         }
     }
 }
