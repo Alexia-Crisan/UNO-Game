@@ -92,6 +92,6 @@ class Player
     {
         Console.WriteLine($"{Name}'s hand:");
         for (int i = 0; i < Hand.Count; i++)
-            Console.WriteLine($"{i}: {Hand[i]}");
+            Console.WriteLine($"[{i}]: {Hand[i]}");
     }
 }

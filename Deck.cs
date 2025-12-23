@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices.Marshalling;
+
 class Deck
 {
     private Stack<Card> cards;
@@ -68,6 +70,7 @@ class Deck
 
     public void RefillFromDiscard(List<Card> discardPile, Card topCard)
     {
+        Console.WriteLine("============================================= [RefillFromDiscard]");
         if (discardPile == null || discardPile.Count == 0)
             return;
 
@@ -79,8 +82,6 @@ class Deck
             deckList.Remove(topCard);
 
         discardPile.Clear();
-
-        Shuffle();
 
         Shuffle();
     }
