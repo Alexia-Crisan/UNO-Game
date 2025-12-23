@@ -88,7 +88,7 @@ class Player
         return null;
     }
 
-    public void ShowHand()
+    public void ShowHand1()
     {
         Console.WriteLine($"{Name}'s hand:");
         for (int i = 0; i < Hand.Count; i++)
@@ -98,4 +98,13 @@ class Player
             Console.WriteLine();
         }
     }
+
+    public void ShowHand2()
+    {
+        Console.Write($"{Name}'s hand ({Hand.Count} cards): ");
+        foreach (var card in Hand)
+            card.PrintAsUNO();
+        Console.WriteLine();
+    }
+
 }

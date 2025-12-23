@@ -141,7 +141,7 @@ class Game
             topCard.PrintColored();
             Console.WriteLine();
 
-            currentPlayer.ShowHand();
+            currentPlayer.ShowHand2();
 
             Card playedCard = currentPlayer.PlayCard(topCard);
 

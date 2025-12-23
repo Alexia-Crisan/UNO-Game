@@ -70,7 +70,7 @@ class Deck
 
     public void RefillFromDiscard(List<Card> discardPile, Card topCard)
     {
-        Console.WriteLine("============================================= [RefillFromDiscard]");
+        Console.WriteLine("========== [RefillFromDiscard]");
         if (discardPile == null || discardPile.Count == 0)
             return;
 
