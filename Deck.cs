@@ -36,9 +36,15 @@ class Deck
         cards = new Stack<Card>(deckList);
     }
 
-    public Card DrawCard()
+    public bool DrawCard(out Card drawnCard)
     {
-        if (cards.Count == 0) throw new Exception("Deck is empty!");
-        return cards.Pop();
+        if (cards.Count == 0)
+        {
+            drawnCard = null;
+            return false;
+        }
+
+        drawnCard = cards.Pop();
+        return true;
     }
 }

@@ -8,9 +8,15 @@ class Player
         Name = name;
     }
 
-    public void DrawCard(Deck deck)
+    public bool DrawCard(Deck deck)
     {
-        Hand.Add(deck.DrawCard());
+        Card drawnCard;
+
+        if (!deck.DrawCard(out drawnCard))
+            return false; // empty deck
+
+        Hand.Add(drawnCard);
+        return true;
     }
 
     public Card PlayCard(Card topCard)

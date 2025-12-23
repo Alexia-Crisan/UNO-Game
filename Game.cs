@@ -25,7 +25,12 @@ class Game
             for (int i = 0; i < 7; i++)
                 player.DrawCard(deck);
 
-        topCard = deck.DrawCard();
+
+        if (!deck.DrawCard(out topCard))
+        {
+            playing = false;
+            return;
+        }
         currentPlayerIndex = 0;
     }
 
@@ -59,7 +64,15 @@ class Game
             else
             {
                 Console.WriteLine($"{currentPlayer.Name} has no playable card. Drawing one...");
-                currentPlayer.DrawCard(deck);
+
+                bool cardDrawn = currentPlayer.DrawCard(deck);
+
+                if (!cardDrawn)
+                {
+                    Console.WriteLine("\nDeck is empty! Game ends!");
+                    playing = false;
+                    break;
+                }
             }
 
             if (currentPlayer.Hand.Count == 0)
@@ -68,7 +81,7 @@ class Game
                 break;
             }
 
-            currentPlayerIndex = GetNextPlayerIndex(-1);
+            currentPlayerIndex = GetNextPlayerIndex(1);
         }
     }
 }
