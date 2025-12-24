@@ -87,14 +87,14 @@ class Game
         {
             case CardType.SkipTurn:
                 {
-                    Console.WriteLine("Next player is skipped!");
+                    Console.WriteLine("[SKIP] Next player is skipped!");
                     currentPlayerIndex = GetNextPlayerIndex(2);
                     break;
                 }
 
             case CardType.ReverseOrder:
                 {
-                    Console.WriteLine("Direction reversed!");
+                    Console.WriteLine("[REVERSE] Direction reversed!");
                     direction *= -1;
                     currentPlayerIndex = GetNextPlayerIndex();
                     break;
@@ -103,7 +103,7 @@ class Game
             case CardType.DrawTwoCards:
                 {
                     int nextPlayer = GetNextPlayerIndex();
-                    Console.WriteLine($"{players[nextPlayer].Name} draws 2 cards!");
+                    Console.WriteLine($"[+2] {players[nextPlayer].Name} draws 2 cards!");
                     players[nextPlayer].DrawCard(deck, discardPile, null);
                     players[nextPlayer].DrawCard(deck, discardPile, null);
                     currentPlayerIndex = GetNextPlayerIndex(2);
@@ -113,7 +113,7 @@ class Game
             case CardType.WildCard:
                 {
                     Color chosenColor = ChooseColor(players[currentPlayerIndex]);
-                    Console.WriteLine($"[W] Wild card played! Color changed to {chosenColor}");
+                    Console.WriteLine($"[COLOR CHANGE] Wild card played! Color changed to {chosenColor}");
                     card.SetColor(chosenColor);
 
                     currentPlayerIndex = GetNextPlayerIndex();
@@ -123,11 +123,11 @@ class Game
             case CardType.WildDrawFour:
                 {
                     Color chosenColor = ChooseColor(players[currentPlayerIndex]);
-                    Console.WriteLine($"[W] Wild Draw Four! Color changed to {chosenColor}");
+                    Console.WriteLine($"[+4] Wild Draw Four! Color changed to {chosenColor}");
                     card.SetColor(chosenColor);
 
                     int nextPlayer4 = GetNextPlayerIndex();
-                    Console.WriteLine($"{players[nextPlayer4].Name} draws 4 cards!");
+                    Console.WriteLine($"[+4] {players[nextPlayer4].Name} draws 4 cards!");
                     for (int i = 0; i < 4; i++)
                         players[nextPlayer4].DrawCard(deck, discardPile, null);
                     currentPlayerIndex = GetNextPlayerIndex(2);
@@ -148,7 +148,7 @@ class Game
         {
             Player currentPlayer = players[currentPlayerIndex];
 
-            Console.Write("\n[Top card]: ");
+            Console.Write("\n[TOP CARD]: ");
             topCard.PrintColored();
             Console.WriteLine();
 
@@ -158,7 +158,7 @@ class Game
 
             if (playedCard != null)
             {
-                Console.WriteLine($"{currentPlayer.Name} plays {playedCard}");
+                Console.WriteLine($"[PLAYED CARD] {currentPlayer.Name} plays {playedCard}");
                 Console.WriteLine();
 
                 // reset color for wild card + add to discard pile
@@ -171,12 +171,12 @@ class Game
             }
             else
             {
-                Console.WriteLine($"{currentPlayer.Name} has no playable card. Drawing one...");
+                Console.WriteLine($"[DRAW] {currentPlayer.Name} has no playable card. Drawing one...");
 
                 bool drewCard = currentPlayer.DrawCard(deck, discardPile, topCard);
                 if (!drewCard)
                 {
-                    Console.WriteLine("\nNo cards left anywhere! Game ends!");
+                    Console.WriteLine("\n[END] No cards left anywhere! Game ends!");
                     EndGameByFewestCards();
                     playing = false;
                     return;
@@ -187,7 +187,7 @@ class Game
 
             if (currentPlayer.Hand.Count == 0)
             {
-                Console.WriteLine($"\n{currentPlayer.Name} wins!");
+                Console.WriteLine($"\n[WIN] {currentPlayer.Name} wins!");
                 AwardPoints(new List<Player> { currentPlayer });
                 playing = false;
                 return;
@@ -196,7 +196,7 @@ class Game
             int totalInHands = players.Sum(p => p.Hand.Count);
             if (totalInHands == 108)
             {
-                Console.WriteLine("\nAll cards are in players' hands! Game ends!");
+                Console.WriteLine("\n[END] All cards are in players' hands! Game ends!");
                 EndGameByFewestCards();
                 return;
             }
@@ -210,11 +210,11 @@ class Game
 
         if (winners.Count == 1)
         {
-            Console.WriteLine($"\nGame ends! {winners[0].Name} wins with {minCards} cards left!");
+            Console.WriteLine($"\n[END] Game ends! {winners[0].Name} wins with {minCards} cards left!");
         }
         else
         {
-            Console.WriteLine($"\nGame ends! Tie between: {string.Join(", ", winners.Select(p => p.Name))}");
+            Console.WriteLine($"\n[END] Game ends! Tie between: {string.Join(", ", winners.Select(p => p.Name))}");
         }
 
         AwardPoints(winners);
@@ -254,7 +254,10 @@ class Game
 
     private void PrintScores()
     {
-        Console.WriteLine("\n=== SCOREBOARD ===");
+        Console.WriteLine("\n++======================++");
+        Console.WriteLine("||      SCOREBOARD      ||");
+        Console.WriteLine("++======================++");
+
         for (int i = 0; i < players.Count; i++)
         {
             Console.WriteLine($"{players[i].Name}: {scores[i]} pts");
@@ -271,7 +274,7 @@ class Game
             scores[index] += roundScore;
         }
 
-        Console.WriteLine($"\nPoints awarded: {roundScore}");
+        Console.WriteLine($"\n[SCORE] Points awarded: {roundScore}");
     }
 
     private bool HasMatchWinner(out Player winner)
@@ -309,7 +312,10 @@ class Game
 
     public void PlayTournament()
     {
-        Console.WriteLine("\n=== MATCH START ===");
+        Console.WriteLine("════════════════════════════════════");
+        Console.WriteLine("║           MATCH START             ║");
+        Console.WriteLine("════════════════════════════════════");
+
 
         while (true)
         {
@@ -323,7 +329,10 @@ class Game
                 break;
             }
 
-            Console.WriteLine("\n--- Next round starting ---");
+            Console.WriteLine("\n----------------------------------------");
+            Console.WriteLine("|         NEXT ROUND STARTING          |");
+            Console.WriteLine("----------------------------------------");
+
             Console.ReadLine();
         }
     }
