@@ -3,4 +3,4 @@ Console.WriteLine("========== UNO Game ==========");
 
 List<string> playerNames = new List<string> { "Alice", "Bob", "Charlie", "Emanuela", "Greg", "Cerasela" };
 Game game = new Game(playerNames);
-game.Play();
+game.PlayTournament();

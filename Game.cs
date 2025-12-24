@@ -15,6 +15,8 @@ class Game
 
     private List<int> scores;
 
+    private const int WINNING_SCORE = 600;
+
 
     public Game(List<string> playerNames)
     {
@@ -28,7 +30,7 @@ class Game
         }
 
         // deal 7 cards to each player
-        foreach (var player in players)
+        foreach (Player player in players)
             for (int i = 0; i < 7; i++)
                 player.DrawCard(deck, discardPile, null);
 
@@ -140,7 +142,7 @@ class Game
         }
     }
 
-    public void Play()
+    public void PlayOneRound()
     {
         while (playing == true)
         {
@@ -188,7 +190,7 @@ class Game
                 Console.WriteLine($"\n{currentPlayer.Name} wins!");
                 AwardPoints(new List<Player> { currentPlayer });
                 playing = false;
-                break;
+                return;
             }
 
             int totalInHands = players.Sum(p => p.Hand.Count);
@@ -196,7 +198,7 @@ class Game
             {
                 Console.WriteLine("\nAll cards are in players' hands! Game ends!");
                 EndGameByFewestCards();
-                break;
+                return;
             }
         }
     }
@@ -218,7 +220,6 @@ class Game
         AwardPoints(winners);
         playing = false;
     }
-
 
     private int GetCardScore(Card card)
     {
@@ -271,7 +272,60 @@ class Game
         }
 
         Console.WriteLine($"\nPoints awarded: {roundScore}");
-        PrintScores();
+    }
+
+    private bool HasMatchWinner(out Player winner)
+    {
+        for (int i = 0; i < scores.Count; i++)
+        {
+            if (scores[i] >= WINNING_SCORE)
+            {
+                winner = players[i];
+                return true;
+            }
+        }
+
+        winner = null;
+        return false;
+    }
+
+    private void ResetRound()
+    {
+        deck = new Deck();
+        discardPile.Clear();
+
+        foreach (Player player in players)
+            player.Hand.Clear();
+
+        foreach (Player player in players)
+            for (int i = 0; i < 7; i++)
+                player.DrawCard(deck, discardPile, null);
+
+        deck.DrawCard(out topCard, discardPile, null);
+        currentPlayerIndex = 0;
+        direction = 1;
+        playing = true;
+    }
+
+    public void PlayTournament()
+    {
+        Console.WriteLine("\n=== MATCH START ===");
+
+        while (true)
+        {
+            ResetRound();
+            PlayOneRound();
+
+            if (HasMatchWinner(out Player matchWinner))
+            {
+                Console.WriteLine($"\n[MATCH WINNER]: {matchWinner.Name} with {scores[players.IndexOf(matchWinner)]} points!");
+                PrintScores();
+                break;
+            }
+
+            Console.WriteLine("\n--- Next round starting ---");
+            Console.ReadLine();
+        }
     }
 
 }
