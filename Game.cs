@@ -13,6 +13,9 @@ class Game
 
     private List<Card> discardPile = new List<Card>();
 
+    private List<int> scores;
+
+
     public Game(List<string> playerNames)
     {
         deck = new Deck();
@@ -35,7 +38,13 @@ class Game
             playing = false;
             return;
         }
+
         currentPlayerIndex = 0;
+
+        scores = new List<int>();
+        for (int i = 0; i < players.Count; i++)
+            scores.Add(0);
+
     }
 
     private int GetNextPlayerIndex(int steps = 1)
@@ -177,6 +186,8 @@ class Game
             if (currentPlayer.Hand.Count == 0)
             {
                 Console.WriteLine($"\n{currentPlayer.Name} wins!");
+                AwardPoints(new List<Player> { currentPlayer });
+                playing = false;
                 break;
             }
 
@@ -201,10 +212,66 @@ class Game
         }
         else
         {
-            Console.WriteLine($"\nGame ends! It's a tie between: {string.Join(", ", winners.Select(p => p.Name))} with {minCards} cards left each.");
+            Console.WriteLine($"\nGame ends! Tie between: {string.Join(", ", winners.Select(p => p.Name))}");
         }
 
+        AwardPoints(winners);
         playing = false;
+    }
+
+
+    private int GetCardScore(Card card)
+    {
+        return card.Type switch
+        {
+            CardType.Number => 10,
+            CardType.SkipTurn => 25,
+            CardType.ReverseOrder => 25,
+            CardType.DrawTwoCards => 25,
+            CardType.WildCard => 30,
+            CardType.WildDrawFour => 40,
+            _ => 0
+        };
+    }
+    private int CalculateScoreForWinners(List<Player> winners)
+    {
+        int score = 0;
+
+        foreach (Player player in players)
+        {
+            if (winners.Contains(player))
+                continue;
+
+            foreach (Card card in player.Hand)
+            {
+                score += GetCardScore(card);
+            }
+        }
+
+        return score;
+    }
+
+    private void PrintScores()
+    {
+        Console.WriteLine("\n=== SCOREBOARD ===");
+        for (int i = 0; i < players.Count; i++)
+        {
+            Console.WriteLine($"{players[i].Name}: {scores[i]} pts");
+        }
+    }
+
+    private void AwardPoints(List<Player> winners)
+    {
+        int roundScore = CalculateScoreForWinners(winners);
+
+        foreach (Player winner in winners)
+        {
+            int index = players.IndexOf(winner);
+            scores[index] += roundScore;
+        }
+
+        Console.WriteLine($"\nPoints awarded: {roundScore}");
+        PrintScores();
     }
 
 }
