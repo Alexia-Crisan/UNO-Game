@@ -6,17 +6,19 @@ class Game
     private List<Player> players;
     private Card topCard;
     private int currentPlayerIndex;
-
     private int direction = 1; // 1 = clockwise, -1 = counter-clockwise
-
     private bool playing = true;
-
     private List<Card> discardPile = new List<Card>();
+    private ScoreManager scoreManager;
 
-    private List<int> scores;
 
-    private const int WINNING_SCORE = 600;
+    public List<Player> Players => players;
+    public Deck Deck => deck;
+    public List<Card> DiscardPile => discardPile;
+    public Player CurrentPlayer => players[currentPlayerIndex];
+    public int CurrentPlayerIndex { get => currentPlayerIndex; set => currentPlayerIndex = value; }
 
+    public void ReverseDirection() => direction *= -1;
 
     public Game(List<string> playerNames)
     {
@@ -29,11 +31,9 @@ class Game
             players.Add(p);
         }
 
-        // deal 7 cards to each player
-        foreach (Player player in players)
-            for (int i = 0; i < 7; i++)
-                player.DrawCard(deck, discardPile, null);
+        scoreManager = new ScoreManager(players);
 
+        Deal7Cards();
 
         if (!deck.DrawCard(out topCard, discardPile, null))
         {
@@ -42,26 +42,26 @@ class Game
         }
 
         currentPlayerIndex = 0;
-
-        scores = new List<int>();
-        for (int i = 0; i < players.Count; i++)
-            scores.Add(0);
-
     }
 
-    private int GetNextPlayerIndex(int steps = 1)
+    private void Deal7Cards()
+    {
+        foreach (var player in players)
+            for (int i = 0; i < 7; i++)
+                player.DrawCard(deck, discardPile, null);
+    }
+
+    public int GetNextPlayerIndex(int steps = 1)
     {
         int index = currentPlayerIndex;
 
         for (int i = 0; i < steps; i++)
-        {
             index = (index + direction + players.Count) % players.Count;
-        }
 
         return index;
     }
 
-    private Color ChooseColor(Player player)
+    public Color ChooseColor(Player player)
     {
         int[] colorCount = new int[4]; // Red, Blue, Green, Yellow 
 
@@ -81,76 +81,13 @@ class Game
         return (Color)maxIndex;
     }
 
-    private void ApplyCardEffect(Card card)
-    {
-        switch (card.Type)
-        {
-            case CardType.SkipTurn:
-                {
-                    Console.WriteLine("[SKIP] Next player is skipped!");
-                    currentPlayerIndex = GetNextPlayerIndex(2);
-                    break;
-                }
-
-            case CardType.ReverseOrder:
-                {
-                    Console.WriteLine("[REVERSE] Direction reversed!");
-                    direction *= -1;
-                    currentPlayerIndex = GetNextPlayerIndex();
-                    break;
-                }
-
-            case CardType.DrawTwoCards:
-                {
-                    int nextPlayer = GetNextPlayerIndex();
-                    Console.WriteLine($"[+2] {players[nextPlayer].Name} draws 2 cards!");
-                    players[nextPlayer].DrawCard(deck, discardPile, null);
-                    players[nextPlayer].DrawCard(deck, discardPile, null);
-                    currentPlayerIndex = GetNextPlayerIndex(2);
-                    break;
-                }
-
-            case CardType.WildCard:
-                {
-                    Color chosenColor = ChooseColor(players[currentPlayerIndex]);
-                    Console.WriteLine($"[COLOR CHANGE] Wild card played! Color changed to {chosenColor}");
-                    card.SetColor(chosenColor);
-
-                    currentPlayerIndex = GetNextPlayerIndex();
-                    break;
-                }
-
-            case CardType.WildDrawFour:
-                {
-                    Color chosenColor = ChooseColor(players[currentPlayerIndex]);
-                    Console.WriteLine($"[+4] Wild Draw Four! Color changed to {chosenColor}");
-                    card.SetColor(chosenColor);
-
-                    int nextPlayer4 = GetNextPlayerIndex();
-                    Console.WriteLine($"[+4] {players[nextPlayer4].Name} draws 4 cards!");
-                    for (int i = 0; i < 4; i++)
-                        players[nextPlayer4].DrawCard(deck, discardPile, null);
-                    currentPlayerIndex = GetNextPlayerIndex(2);
-                    break;
-                }
-
-            default:
-                {
-                    currentPlayerIndex = GetNextPlayerIndex();
-                    break;
-                }
-        }
-    }
-
     public void PlayOneRound()
     {
         while (playing == true)
         {
             Player currentPlayer = players[currentPlayerIndex];
 
-            Console.Write("\n[TOP CARD]: ");
-            topCard.PrintColored();
-            Console.WriteLine();
+            Console.Write("\n[TOP CARD]: "); topCard.PrintColored(); Console.WriteLine();
 
             currentPlayer.ShowHand2();
 
@@ -167,7 +104,7 @@ class Game
                 discardPile.Add(topCard);
                 topCard = playedCard;
 
-                ApplyCardEffect(playedCard);
+                currentPlayerIndex = GetNextPlayerIndex(CardEffectManager.ApplyCardEffect(playedCard, this));
             }
             else
             {
@@ -182,13 +119,13 @@ class Game
                     return;
                 }
 
-                currentPlayerIndex = GetNextPlayerIndex(1);
+                currentPlayerIndex = GetNextPlayerIndex();
             }
 
             if (currentPlayer.Hand.Count == 0)
             {
                 Console.WriteLine($"\n[WIN] {currentPlayer.Name} wins!");
-                AwardPoints(new List<Player> { currentPlayer });
+                scoreManager.AwardPoints(new List<Player> { currentPlayer });
                 playing = false;
                 return;
             }
@@ -217,79 +154,8 @@ class Game
             Console.WriteLine($"\n[END] Game ends! Tie between: {string.Join(", ", winners.Select(p => p.Name))}");
         }
 
-        AwardPoints(winners);
+        scoreManager.AwardPoints(winners);
         playing = false;
-    }
-
-    private int GetCardScore(Card card)
-    {
-        return card.Type switch
-        {
-            CardType.Number => 10,
-            CardType.SkipTurn => 25,
-            CardType.ReverseOrder => 25,
-            CardType.DrawTwoCards => 25,
-            CardType.WildCard => 30,
-            CardType.WildDrawFour => 40,
-            _ => 0
-        };
-    }
-    private int CalculateScoreForWinners(List<Player> winners)
-    {
-        int score = 0;
-
-        foreach (Player player in players)
-        {
-            if (winners.Contains(player))
-                continue;
-
-            foreach (Card card in player.Hand)
-            {
-                score += GetCardScore(card);
-            }
-        }
-
-        return score;
-    }
-
-    private void PrintScores()
-    {
-        Console.WriteLine("\n++======================++");
-        Console.WriteLine("||      SCOREBOARD      ||");
-        Console.WriteLine("++======================++");
-
-        for (int i = 0; i < players.Count; i++)
-        {
-            Console.WriteLine($"{players[i].Name}: {scores[i]} pts");
-        }
-    }
-
-    private void AwardPoints(List<Player> winners)
-    {
-        int roundScore = CalculateScoreForWinners(winners);
-
-        foreach (Player winner in winners)
-        {
-            int index = players.IndexOf(winner);
-            scores[index] += roundScore;
-        }
-
-        Console.WriteLine($"\n[SCORE] Points awarded: {roundScore}");
-    }
-
-    private bool HasMatchWinner(out Player winner)
-    {
-        for (int i = 0; i < scores.Count; i++)
-        {
-            if (scores[i] >= WINNING_SCORE)
-            {
-                winner = players[i];
-                return true;
-            }
-        }
-
-        winner = null;
-        return false;
     }
 
     private void ResetRound()
@@ -300,9 +166,7 @@ class Game
         foreach (Player player in players)
             player.Hand.Clear();
 
-        foreach (Player player in players)
-            for (int i = 0; i < 7; i++)
-                player.DrawCard(deck, discardPile, null);
+        Deal7Cards();
 
         deck.DrawCard(out topCard, discardPile, null);
         currentPlayerIndex = 0;
@@ -322,10 +186,10 @@ class Game
             ResetRound();
             PlayOneRound();
 
-            if (HasMatchWinner(out Player matchWinner))
+            if (scoreManager.HasWinner(out Player matchWinner))
             {
-                Console.WriteLine($"\n[MATCH WINNER]: {matchWinner.Name} with {scores[players.IndexOf(matchWinner)]} points!");
-                PrintScores();
+                Console.WriteLine($"\n[MATCH WINNER]: {matchWinner.Name} with {scoreManager.GetScore(matchWinner)} points!");
+                scoreManager.PrintScores();
                 break;
             }
 
