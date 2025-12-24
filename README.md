@@ -46,4 +46,6 @@ The game includes card effects, scoring, and tournament logic.
 
 ---
 
+## Arcade style
+
 ![UNO Game Console Screenshot](img.png)
