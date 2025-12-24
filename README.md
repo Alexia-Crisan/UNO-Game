@@ -1,30 +1,49 @@
-# UNO Game Project
+# UNO Game in C#
 
-A simple console-based implementation of the popular UNO card game in C#.
-
----
-
-## Overview
-
-This project simulates a game of UNO for 2 to 10 players. The game features:
-
-- Standard UNO deck with **108 cards**:
-  - Number cards (0–9) in four colors: Red, Blue, Green, Yellow
-  - Special colored cards: Skip, Reverse, Draw Two
-  - Wild cards: Wild, Wild Draw Four
-- Turn-based gameplay following UNO rules
-- Direction changes and special card effects
-- Automatic handling of empty decks by reshuffling the discard pile
-- Game ends when:
-  - A player has no cards left (wins)
-  - All cards are in players' hands (winner determined by fewest cards)
+A console-based UNO card game implementation in C#, supporting single rounds and tournaments with multiple players.
+The game includes card effects, scoring, and tournament logic.
 
 ---
 
 ## Features
 
-- **Colored terminal output**:
-  - Number cards are printed in their color
-  - Special cards are displayed using initials: `S` = Skip, `R` = Reverse, `+2` = Draw Two, `W` = Wild, `+4` = Wild Draw Four
-- Player hands displayed in one line with the count of cards
-- Card effects (Skip, Reverse, Draw Two, Wild, Wild Draw Four) applied automatically
+- **Multi-player support:** Play with 2–10 players.
+- **UNO deck management:**
+  - Standard UNO deck with numbers, colors, and action cards.
+  - Draw pile and discard pile logic.
+- **Card types and effects:**
+  - Number Cards (0–9): Regular cards.
+  - Skip Turn: Skips the next player's turn.
+  - Reverse Order: Reverses the direction of play.
+  - Draw Two Cards: Next player draws two cards.
+  - Wild Card: Change the color in play.
+  - Wild Draw Four: Change the color and make the next player draw four cards.
+- **Player hand management:**
+  - Display hand with color-coded cards in console.
+  - Play cards that match either color or number.
+  - Draw a card if no playable card exists.
+- **Round logic:**
+  - Plays a single round until a player wins or the deck runs out.
+  - Handles card effects via `CardEffectManager`.
+  - Determines winners by lowest cards if no player clears hand.
+- **Tournament mode:**
+  - Multiple rounds until a player reaches 600 points.
+  - Scores awarded based on remaining cards in opponents’ hands.
+  - Tracks cumulative scores using `ScoreManager`.
+- **Console interface:**
+  - Displays top card and player hand.
+  - Shows actions like draws, skips, and color changes.
+  - Prints current scores and tournament winner.
+
+## Classes Overview
+
+- **Game**: Handles tournament mode and overall flow.
+- **Round**: Handles a single round, player turns, and card effects.
+- **CardEffectManager**: Applies card effects like Skip, Reverse, Draw Two, Wild, and Wild Draw Four.
+- **ScoreManager**: Tracks scores and determines match winners.
+- **Player**: Manages player hand and actions.
+- **Deck & Card**: Represents the UNO deck and individual cards.
+
+---
+
+![UNO Game Console Screenshot](img.png)
