@@ -5,17 +5,17 @@ class CardEffectManager
         switch (card.Type)
         {
             case CardType.SkipTurn:
-                Console.WriteLine("[SKIP] Next player is skipped!");
+                Console.WriteLine("[SKIP] Next player is skipped!\n");
                 return 2;
 
             case CardType.ReverseOrder:
-                Console.WriteLine("[REVERSE] Direction reversed!");
+                Console.WriteLine("[REVERSE] Direction reversed!\n");
                 round.ReverseDirection();
                 return 1;
 
             case CardType.DrawTwoCards:
                 var nextPlayer = round.GetNextPlayerIndex();
-                Console.WriteLine($"[+2] {round.Players[nextPlayer].Name} draws 2 cards!");
+                Console.WriteLine($"[+2] {round.Players[nextPlayer].Name} draws 2 cards!\n");
                 round.Players[nextPlayer].DrawCard(round.Deck, round.DiscardPile, null);
                 round.Players[nextPlayer].DrawCard(round.Deck, round.DiscardPile, null);
                 return 2;
@@ -28,7 +28,7 @@ class CardEffectManager
 
             case CardType.WildDrawFour:
                 var color4 = ChooseColor(round.CurrentPlayer);
-                Console.WriteLine($"[+4] Wild Draw Four! Color changed to {color4}");
+                Console.WriteLine($"[+4] Wild Draw Four! Color changed to {color4}\n");
                 card.SetColor(color4);
                 var next = round.GetNextPlayerIndex();
                 Console.WriteLine($"[+4] {round.Players[next].Name} draws 4 cards!");

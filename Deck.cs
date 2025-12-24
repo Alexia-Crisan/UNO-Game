@@ -72,7 +72,7 @@ class Deck
     {
         Console.WriteLine("\n┌────────────────────────────┐");
         Console.WriteLine("│    Refill From Discard     │");
-        Console.WriteLine("└────────────────────────────┘");
+        Console.WriteLine("└────────────────────────────┘\n");
 
         if (discardPile == null || discardPile.Count == 0)
             return;

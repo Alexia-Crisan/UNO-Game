@@ -22,7 +22,7 @@ class Game
     {
         Console.WriteLine("════════════════════════════════════");
         Console.WriteLine("║           MATCH START             ║");
-        Console.WriteLine("════════════════════════════════════");
+        Console.WriteLine("════════════════════════════════════\n");
 
 
         while (true)
